@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import shap
 import matplotlib.pyplot as plt
 import sys
 import os
@@ -19,14 +18,7 @@ def load_assets():
     try:
         from src.predict import load_model
         model, preprocess_objs = load_model()
-        
-        # Try to load background data for SHAP
-        try:
-            background = pd.read_csv('data/processed/background_shap.csv')
-        except FileNotFoundError:
-            st.warning("SHAP background data not found. SHAP explanations will be disabled.")
-            background = None
-            
+        background = None
         return model, preprocess_objs, background
     except Exception as e:
         st.error(f"Failed to load model: {e}")
@@ -77,7 +69,7 @@ input_data = pd.DataFrame([{
 }])
 
 # Debug section
-if st.checkbox("Debug: Show input data"):
+if st.checkbox("Preview: Show input data"):
     st.write("Input data columns:", input_data.columns.tolist())
     st.write("Input data shape:", input_data.shape)
     st.write("Input data:", input_data)
@@ -156,7 +148,7 @@ if st.button("Predict Loan Approval"):
                 st.dataframe(display_df.reset_index(drop=True))
             
         except Exception as e:
-            st.warning(f"⚠️ Feature importance visualization could not be generated: {e}")
+            st.warning(f" Feature importance visualization could not be generated: {e}")
 
     except Exception as e:
         st.error(f"❌ Prediction failed: {e}")
