@@ -1,4 +1,14 @@
-def predict_single(raw_input_df, model, preprocess_objs, return_features=False):
+import joblib
+import pandas as pd
+import os
+
+def load_model():
+    models_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "models")
+    model = joblib.load(os.path.join(models_dir, "best_model.joblib"))
+    preprocess_objs = joblib.load(os.path.join(models_dir, "preprocess.joblib"))
+    return model, preprocess_objs
+
+def predict_single(raw_input_df, model, preprocess_objs):
     from src.data_prep import basic_clean, feature_engineer, preprocess_for_model
 
     # 1. Clean and feature engineer
@@ -40,7 +50,4 @@ def predict_single(raw_input_df, model, preprocess_objs, return_features=False):
     proba = model.predict_proba(X_processed)[:, 1][0]
     prediction = int(proba > 0.5)
     
-    if return_features:
-        return prediction, proba, X_processed
-    else:
-        return prediction, proba
+    return prediction, proba
