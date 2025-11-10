@@ -161,3 +161,5 @@ st.sidebar.subheader("Model Information")
 st.sidebar.write(f"Model: XGBoost")
 st.sidebar.write(f"Training ROC AUC: 0.9794")
 st.sidebar.write(f"Target Distribution: 35K Rejected, 10K Approved")
+st.sidebar.write("Author : Data Scientist Prathamesh Patravale ")
+
